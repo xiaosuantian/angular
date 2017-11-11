@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+    .red{
+        background: red;
+    }
+    .green{
+        background: green;
+    }
+    </style>
+</head>
+<body ng-controller="controller" >
+    <input type="text" ng-model="msg"> 
+    <div ng-class="a" ng-style="{background:a=='green'?'orange':'pink'}" ng-bind="msg"></div>
+    <div ng-click="click()" ng-init="i='普通'" >按钮<span ng-bind="i"></span></div>
+    <img ng-src="{{a}}" alt="">
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    // cell
+//内置服务
+//1 $http 请求数据的
+//2 $scope 和 $rootScope 存放数据的  
+//
+//ng-model 用在 input textarea 用户可操作的可输入的元素上
+// {{}} 双向绑定的语法 可以用ng-bind 来代替
+//ng-if 用一个布尔值来控制这个元素是否存在
+//ng-show ng-hide 是用一个布尔值来控制这个元素是否display:block 这个元素恒存在
+//ng-app 这是规定angular的管理边界的 
+//ng-controller 就是我们的控制器控制那个元素 或者说控制那个范围
+//ng-class 可以代替 class的 因为class只能等于一个常量
+//ng-click 代替onclick 可以在$scope下边定义方法
+//ng-repeat 重复渲染某一相同结构
+//ng-src 代替src 的 用法与ng-class有些不一样 例如  ng-src="{{a}}"
+
+   var app = angular.module('app',[])
+   app.controller('controller',['$http','$scope','$rootScope',function($http,$scope){
+  
+    $scope.a = 'red';
+    $scope.click = function(){
+        if($scope.a == 'red'){
+            $scope.a = 'green';
+        } else {
+            $scope.a = 'red';
+        }
+        
+
+    }
+    $http({
+        url:'http://localhost:3000/goodslist',
+        method:'POST',
+        data:'id=3'
+    }).then(function(result){
+        console.log(result)
+    },function(error){
+        console.log(error)
+    })
+   }])
+           
+           
+</script>

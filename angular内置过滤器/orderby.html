@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="A">
+    <table>
+            <tr style="font-weight:600"><td ng-click="orderby('name')">姓名</td><td ng-click="orderby('age')">年龄</td> <td>操作</td></tr>
+            <tr ng-repeat="item in array | orderBy : option">
+                    <td>{{item.name}}</td><td>{{item.age}}</td><td ng-click="remove(item.name)">删除</td>
+            </tr>
+    </table>
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+           .controller('A',['$scope',function($scope){
+            $scope.array =  [
+                        {name:'kimi',age:3},
+                        {name:'cindy',age:4},
+                        {name:'anglar',age:4},
+                        {name:'shitou',age:6},
+                        {name:'tiantian',age:5}
+                    ]           
+            $scope.orderby = function(value){
+                console.log(value)
+
+                if($scope.option&&$scope.option.indexOf(value)!=-1){
+                    $scope.option = $scope.option.charAt(0)=='-' ? value : '-'+value;
+                }else {
+                    $scope.option = value;
+                }
+
+                console.log($scope.option)
+            }  
+            $scope.remove = function(name){
+                //删除
+                // console.log('删除',event.target)
+                console.log(name)
+                for(var i = 0 ; i<$scope.array.length;i++){
+                   if($scope.array[i].name == name) {
+                    $scope.array.splice(i,1);
+                   }
+                }
+            }
+           }])
+</script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+    <style>
+        .box{
+            display: flex;
+        }
+        .name{
+            flex: 2;
+        }
+        .comment{
+            flex: 8;
+        }
+    </style>
+</head>
+<body ng-controller="controllerA">
+    
+<div ng-repeat="value in array" class="box">
+    <div class="name">{{value.name}}</div> <div class="comment">{{value.comment}}</div>
+</div>
+
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    
+    angular.module('app',[])
+           .controller('controllerA',['$scope','$rootScope',function($scope,$rootScope){
+            $scope.number = 'Hello Angular';
+            $rootScope.title = 'angular教学';
+            $scope.array = [{
+                name:'张三',
+                comment:'你好'
+            },{
+                name:'李四',
+                comment:'我喜欢你'
+            },{
+                name:'王五',
+                comment:'....'
+            },{
+                name:'赵六',
+                comment:'好'
+            }
+            ]
+           }])
+           
+</script>

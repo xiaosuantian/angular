@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .active{
+            background: red;
+        }
+    </style>
+</head>
+<body ng-controller="main">
+    <div ui-sref="phone" ui-sref-active="active">1</div>
+    <div ui-sref="pag" ui-sref-active="active">2</div>
+    <div ui-sref="shoes" ui-sref-active="active">3</div>
+    <ui-view></ui-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+</html>
+<script>
+    angular.module('app',['ui.router'])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello';
+            }])
+            .config(['$stateProvider','$urlRouterProvider',function($stateProvider,$urlRouterProvider){ //因为ui.router是基于 state的 不是基于url
+                $urlRouterProvider.otherwise('/phone') //这个服务使用来设置默认页面的
+                $urlRouterProvider.when('/phone','/phone/sub1') //这是设置二级默认页面的
+                $stateProvider.state('phone',{
+                    url:'/phone',
+                    controller:[function(){
+
+                    }],
+                    template:`
+                    <div>
+                    <style>
+                        .a{
+                            background:green
+                        }
+                    </style>
+                    phone
+                    <div ui-sref="phone.sub1" ui-sref-active="a">子页面1</div>
+                    <div ui-sref="phone.sub2" ui-sref-active="a">子页面2</div>
+                    <div ui-sref="phone.sub3" ui-sref-active="a">子页面3</div>
+                    <ui-view><ui-view>
+                    </div>
+                    `
+                })
+                .state('pag',{
+                    url:'/pag',
+                    controller:[function(){
+
+                    }],
+                    template:`
+                    <div>pag</div>
+                    `
+                })
+                .state('shoes',{
+                    url:'/shoes',
+                    controller:['$scope','data',function($scope,data){
+
+                        $scope.data = data;
+                    }],
+                    template:`
+                    <div>shoes{{data}}</div>
+                    `,
+                    resolve:{
+                        data:['$http',function($http){
+
+                            return $http({
+                                url:'http://127.0.0.1:8080/json.json'
+                            })
+                            .then(function(result){
+                                return result.data;
+                            },function(error){
+                                return error
+                            })
+                            
+
+                        }]
+                    }
+                })
+                .state('phone.sub1',{
+                    url:'/sub1',
+                    template:'<div>sub1</div>',
+                    controller:[function(){
+
+                    }]
+                })
+                .state('phone.sub2',{
+                    url:'/sub2',
+                    template:'<div>sub2</div>',
+                    controller:[function(){
+                        
+                    }]
+                })
+                .state('phone.sub3',{
+                    url:'/sub3',
+                    template:'<div>sub3</div>',
+                    controller:[function(){
+                        
+                    }]
+                })
+            }])
+</script>

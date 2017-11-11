@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{data}}
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','ajax',function($scope,ajax){
+
+               $scope.data = ajax({
+                   url:'http://localhost:8080/json.json',
+                   method:'GET'
+               })
+
+
+            }])
+            .service('ajax',['$http','$q',function($http,$q){
+
+                function fn(obj){
+                    var defer = $q.defer(); //用 $q 新建 promise对象
+                    //此时处于 等待状态
+                    $http(obj)
+                    .then(function(result){
+
+                       defer.resolve(result.data);
+                        //此时处于 已解决状态
+                    },function(error){
+                        
+                        defer.reject(error)
+                        //此时处于 已拒绝状态 
+                    })
+                    console.log(defer)
+                    return defer.promise.$$state
+                }
+
+                return fn
+
+            }])
+</script>

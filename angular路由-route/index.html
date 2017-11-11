@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .active{
+        background: red;
+    }
+    </style>
+</head>
+<body ng-controller="main">
+    <a ng-href="#!/phone">手机</a>
+    <a ng-href="#!/bag">包</a>
+    <a ng-href="#!/shoe">鞋</a>
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script>
+</html>
+<script>
+    angular.module('app',['ngRoute'])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello'
+            }])
+            .config(['$routeProvider',function($routeProvider){
+                $routeProvider.when('/phone',{
+                    template:`
+                        <div>{{phone}}手机</div>
+                    `,
+                    controller:['$scope',function($scope){
+                        $scope.phone = '苹果',
+                        console.log('重定向至bag')
+                    }],
+                    redirectTo:'/bag'
+                }).when('/bag',{
+                    template:`
+                        <div>{{bag}}包</div>
+                    `,
+                    controller:['$scope',function($scope){
+                        $scope.bag = 'lv'
+                    }]
+                }).when('/shoe',{
+                    template:`
+                        <div>{{shoe}}</div>
+                    `,
+                    controller:['$scope',function($scope){
+                        $scope.shoe = '耐克'
+                    }]
+                }).otherwise('/phone');
+            }])
+            .run(['$rootScope',function($rootScope){
+                $rootScope.$on('$locationChangeStart',function(){
+                    console.log(111)
+                })
+            }])
+
+</script>

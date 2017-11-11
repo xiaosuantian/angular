@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    <div ng-click="fn('/a')">a</div>
+    <div ng-click="fn('/b')">b</div>
+    <div ng-click="fn('/c')">c</div>
+</body>
+<script src="./angular.js"></script>
+
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','$location',function($scope,$location){
+                $scope.msg = 'hello'
+                $scope.fn = function(url){
+                    $location.url(url)
+                    $location.$$state = url
+                }
+            }])
+            .run(['$rootScope',function($rootScope){
+                $rootScope.$on('$locationChangeStart',function(event,newUrl,oldUrl,newState,oldState){
+                    console.log('执行locationChangeStart')
+                    console.log(arguments);
+                })
+                $rootScope.$on('$locationChangeSuccess',function(event,newUrl,oldUrl,newState,oldState){
+                    console.log('执行locationChangeSuccess')
+                    console.log(newState,oldState);
+                })
+            }])
+</script>

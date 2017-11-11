@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <div>12234</div>
+    <div>aabb</div>
+    <div ng-repeat="value in array">
+        <input ng-type="value.a" ng-placeholder="value.placeholder">
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello';
+                $scope.fn = function(value){
+                    console.log(value)
+                }
+                $scope.fa = function(){
+                    console.log('这是fa')
+                }
+                $scope.array = [{
+                    placeholder:'账号',
+                    a:'text'
+                },{
+                    placeholder:'密码',
+                    a:'password'
+                },{
+                    placeholder:'确认密码',
+                    a:'password'
+                }]
+            }])
+            .directive('myClick',[function(){
+                return function($scope,$element,$attributes){
+                    $element.on('click',function(event){
+                       var $event = event;
+                       $scope.$apply($attributes['myClick']);
+                    })  
+                }
+            }])
+            .directive('ngPlaceholder',[function(){
+                return function($scope,$element,$attributes){
+                    var strCode = '$scope.'+$attributes['ngPlaceholder']
+
+                    $element[0].placeholder = eval(strCode)
+                }
+            }])
+            .directive('ngType',[function(){
+                return function($scope,$element,$attributes){
+                    var strCode = '$scope.'+$attributes['ngType']
+                    
+                    $element[0].type = eval(strCode)
+                }
+            }])
+</script>

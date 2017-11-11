@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    <div ng-controller="controllerA">
+        {{a}}
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+   
+    angular.module('app',[])
+            .controller('main',['$scope',function($scope){
+                $scope.msg = 'hello';
+            }])
+            .controller('controllerA',['$scope','obj','lisi','constructor','factory','provider',function($scope,obj,lisi,constructor,factory,provider){
+                console.log('这里是controllerA',obj,lisi)
+                console.log(constructor.age,constructor.eat(),factory.sleep(),provider)
+            }])
+            .constant('obj',{ //常量
+                name:'zhangsan',
+                age:18
+            })
+            .value('lisi',{ //变量
+                name:'lisi',
+                age:19
+            })
+            .config(['obj',function(obj){
+                console.log('这里是config',obj)
+            }])
+            .service('constructor',[function(){
+                var _this = this;
+                this.name = 'zhangsan';
+                this.age = 18;
+                this.eat = function(){
+                    console.log(_this.name+'在吃饭');
+                    return ''
+                }
+            }])
+            .factory('factory',[function(){
+                return {
+                    name:'zhansan',
+                    sleep:function(){
+                        console.log('张三在睡觉')
+                    }
+                }
+
+            }])
+            .provider('provider',[function(){
+                return {
+                    $get:function(){
+                        return new function(){
+                            this.name = 'zhangsan';
+                            this.age = 180;
+                        }
+                    }
+                }
+            }])
+</script>

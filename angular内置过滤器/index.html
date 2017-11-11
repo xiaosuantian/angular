@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="controller">
+    <!-- alt + 0165 -->
+    格式化货币<span ng-bind="1000|currency:'¥'"></span>
+    <div>格式化时间{{ date | date :"ss$EEE" }}</div>
+    <div>过滤数据{{ array | filter :fn }}</div>
+    <div>格式化JSON {{ json }} {{json | json}}</div>
+    <div>限制长度{{array | limitTo : 1}} {{ 'hello' | limitTo : 2 }}</div>
+    
+</body> 
+<script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+        .controller('controller',['$scope',function($scope){
+            $scope.json = {
+                a:'a',
+                b:'b'
+            }
+            $scope.msg = 'hello'
+            $scope.date = new Date().getTime();
+            $scope.array =  [
+                        {name:'kimi',age:3},
+                        {name:'cindy',age:4},
+                        {name:'anglar',age:4},
+                        {name:'shitou',age:6},
+                        {name:'tiantian',age:5}
+                    ] 
+            $scope.fn = function(item,index,array){
+
+                return item.age>4&&(item.name.indexOf('a')!=-1)
+            }
+        }])
+</script>

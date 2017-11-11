@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <input type="text" ng-model="index">
+    {{msg | upperCaseLetter :index }}
+    <div ng-controller="controllerDiv">
+        
+    </div>
+</body>
+<script src="./angular.js"></script>
+</html>
+<script>
+    var app = angular.module('app',[])
+    app.controller('main',['$scope',function(h){
+        console.log(typeof h)
+        h.msg = 'hello'
+    }])
+    .filter('upperCaseLetter',['$http',function($http){
+
+        return function(input,params1,params2,params3){
+
+            var output = input.replace(input.charAt(params1),input.charAt(params1).toUpperCase())
+
+            return output;
+        }
+    }])
+</script>

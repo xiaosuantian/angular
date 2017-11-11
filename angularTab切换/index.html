@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+   <tab data = 'array'></tab>
+</body>
+    <script src="./angular.js"></script>
+</html>
+<script>
+    angular.module('app',[])
+            .controller('main',['$scope','dataBase',function($scope,dataBase){
+               $scope.array = dataBase;
+            }])
+            .directive('tab',[function(){
+                return{
+                    restrict:'E',
+                    template:`
+                    <div>
+                    <style>
+                        .top{
+                            display:flex;
+                        }
+                        .btn{
+                            flex:1
+                        }
+                        .content{
+                            width:100%;
+                        }
+                        .goodslist{
+                            display:flex;
+                        }
+                        .goodslist div{
+                        .goodslist{
+                            display:flex;
+                        }
+                        .goodslist div{
+                            flex:1
+                        }
+                        .active{
+                            background:red
+                        }
+                    </style>
+                    <div class="box">
+                        <div class="top">
+                        <div ng-repeat="item in data" class="btn" ng-click="click(item.value,$index)" ng-class="{{'active'+$index}}">{{item.type}}</div>
+                        </div>
+                        <div class="content">
+                            <div class = 'goodslist' ng-repeat="value in contentArr">
+                                <div>{{value.name}}</div>
+                                <div>{{value.price | currency:'¥'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    `,
+                    scope:{
+                        data:'='
+                    },
+                    controller:['$scope',function($scope){
+                            $scope.click = function(value,index){
+                                $scope.contentArr = value;
+                                for(var i=0 ; i<$scope.data.length; i++){
+                                $scope['active'+i] = '';        
+                                }
+                                $scope['active'+index] = 'active';
+                            }
+                            $scope.contentArr = $scope.data[0].value;
+                            $scope['active'+0] = 'active';
+                    }]
+                }
+            }])
+            .value('dataBase',[{
+                type:'手机',
+                value:[{
+                    name:'iphone8',
+                    price:1
+                },{
+                    name:'魅族note2',
+                    price:1
+                },{
+                    name:'华为c8812e',
+                    price:1
+                }]
+            },{
+                type:'鞋子',
+                value:[
+                {
+                    name:'李宁',
+                    price:1
+                },{
+                    name:'耐克',
+                    price:1
+                },{
+                    name:'阿迪达斯',
+                    price:1
+                }
+                ]
+            },{
+                type:'包',
+                value:[{
+                    name:'lv',
+                    price:1
+                },{
+                    name:'爱马仕',
+                    price:1
+                },{
+                    name:'书包',
+                    price:1
+                }]
+            }])
+</script>

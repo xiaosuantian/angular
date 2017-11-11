@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    <ui-view></ui-view>
+    <div ui-sref="phone({canshu:421})">phone</div>
+    <div ng-click="urlFn('/bag')" >bag</div>
+    <div ng-click="fn('shoes')" >shoes</div>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-ui-router.js"></script>
+</html>
+<script>
+    angular.module('app',['ui.router'])
+            .controller('main',['$scope','$state','$location',function($scope,$state,$location){
+                $scope.msg = 'hello'
+                $scope.fn=function(stateName){
+                    $state.go(stateName);
+                }
+                $scope.urlFn = function(url){
+                    url += '?id=100'
+                    $location.url(url);
+                }
+            }])
+            .config(['$stateProvider',function($stateProvider){
+                $stateProvider.state('phone',{
+                    url:'/phone',
+                    template:'<div>phone{{abc}}</div>',
+                    controller:['$stateParams','$scope',function($stateParams,$scope){
+                        $scope.abc = $stateParams.canshu
+                    }],
+                    params:{
+                        canshu:'124'
+                    }
+                })
+                .state('bag',{
+                    url:'/bag',
+                    template:'<div>bag</div>',
+                    controller:['$location',function($location){
+                        // console.log(window.location.hash)  
+                        console.log($location.search()) 
+                        // console.log($location)
+                    }]      
+                })
+                .state('shoes',{
+                    url:'/shoes',
+                    template:'<div>shoes</div>'                  
+                })
+            }])
+</script>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body ng-controller="main">
+    {{msg}}
+    <a href="#!/phone?goodsId=001&goodsType=32">phone</a>
+    <span ng-click="fn('/pag')">pag</span>
+    <a href="#!/shoes/001/007">shoes</a>
+    <ng-view></ng-view>
+</body>
+<script src="./angular.js"></script>
+<script src="./angular-route.js"></script> 
+</html>
+<script>
+    angular.module('app',['ngRoute']) // ngRoute是基于 url  所以可以通过loaction.href 来控制  但是我们的angular 内部实现了$loaction 
+            .controller('main',['$scope','$location',function($scope,$location){
+                $scope.msg = 'hello'
+                $scope.fn = function(url){
+                    var yourParmas = 'type=007'
+                    url += '?'+yourParmas
+                    $location.url(url);
+                }
+            }])
+            .config(['$routeProvider',function($routeProvider){
+                $routeProvider.when('/phone',{
+                                templateUrl:'./phone.html',
+                                controller:['$scope','$routeParams','$http',function($scope,$routeParams,$http){
+                                    console.log($routeParams)
+                                    // $http({
+                                    //     url:'',
+                                    //     method:'POST',
+                                    //     data:$routeParams
+                                    // })
+                                    // .then(function(result){
+
+                                    // },function(error){
+
+                                    // })
+                                    $scope.data = $routeParams.goodsId;
+                                }]
+                              })
+                              .when('/pag',{
+                                templateUrl:'./pag.html',
+                                controller:['$routeParams','$scope','$location',function($routeParams,$scope,$location){
+                                   console.log('可以通过$routeParams服务获取参数',$routeParams)
+                                   $scope.type = $routeParams.type;
+                                   console.log('可以通过截取字符串的方式获取参数',location.href)
+                                   console.log('可以通过$location服务获取参数',$location.search())
+                                }]
+                              })
+                              .when('/shoes/:id/:type',{
+                                templateUrl:'./shoes.html',
+                                controller:['$routeParams',function($routeParams){
+                                    console.log('这是通过/shoes/:id/:type 来传参的',$routeParams)
+                                }]
+                              })
+                              .otherwise('/phone')
+            }])
+</script>
